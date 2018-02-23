@@ -1,53 +1,68 @@
-Electrum - Lightweight Bitcoin client
+.. image:: https://travis-ci.org/Feathercoin-Foundation/electrum-ftc.svg?branch=3.0.6-ftc
+    :target: https://travis-ci.org/Feathercoin-Foundation/electrum-ftc
+    :alt: Build Status
+
+
+electrum-ftc - Lightweight Feathercoin client
 =====================================
 
-::
+electrum-ftc is a fork of the `Bitcoin Electrum wallet <https://electrum.org/>`_ adapted to work with Feathercoin.
+All improvements which are not related to Feathercoin itself will be made directly in the
+`upstream Electrum repository <https://github.com/spesmilo/electrum>`_.
 
-  Licence: MIT Licence
-  Author: Thomas Voegtlin
-  Language: Python
-  Homepage: https://electrum.org/
+Relevant changes to the Bitcoin Electrum wallet:
 
-
-.. image:: https://travis-ci.org/spesmilo/electrum.svg?branch=master
-    :target: https://travis-ci.org/spesmilo/electrum
-    :alt: Build Status
-.. image:: https://coveralls.io/repos/github/spesmilo/electrum/badge.svg?branch=master
-    :target: https://coveralls.io/github/spesmilo/electrum?branch=master
-    :alt: Test coverage statistics
-
-
-
-
+- Works with the Feathercoin specifics (address format, difficulty adjustment, NeoScrypt)
+- All transactions are replace-by-fee transactions
+- No hardware wallet support
+- No support for Trustedcoin 2FA or GreenAddress
+- No Android version
 
 
 Getting started
 ===============
 
-Electrum is a pure python application. If you want to use the
-Qt interface, install the Qt dependencies::
+Windows
+-------
 
-    sudo apt-get install python3-pyqt5
+The Windows builds come in three flavors:
 
-If you downloaded the official package (tar.gz), you can run
-Electrum from its root directory, without installing it on your
-system; all the python dependencies are included in the 'packages'
-directory. To run Electrum from its root directory, just do::
+1. *setup* - this will properly install Electrum-FTC on Windows including
+   adding icons to the Desktop and Start Menu. The installed exe has the
+   fastest startup time of all three flavors. Most users want to use this flavor.
 
-    ./electrum
+2. *standalone* - this is an exe that does not need any installation. It
+   will use the ``%APPDATA%`` folder to store settings and wallet data.
 
-You can also install Electrum on your system, by running this command::
+3. *portable* - this is an exe that does not need any installation. It will
+   use the folder where the exe is located to store settings and wallet
+   data. Therefore, it can be used on an USB pen drive to use Electrum-FTC
+   on multiple computers - hence portable. This flavor is most interesting
+   for testers who don't want to interfere with their existing installation
+   of Electrum-FTC.
 
-    sudo apt-get install python3-setuptools
-    python3 setup.py install
+Download the latest version from our `release page <https://github.com/Feathercoin-Foundation/electrum-ftc/releases>`_.
 
-This will download and install the Python dependencies used by
-Electrum, instead of using the 'packages' directory.
+Mac
+---
 
-If you cloned the git repository, you need to compile extra files
-before you can run Electrum. Read the next section, "Development
-Version".
+Download the latest version from our `release page <https://github.com/Feathercoin-Foundation/electrum-ftc/releases>`_.
 
+Linux
+-----
+
+First the dependencies need to be installed. For Ubuntu/Debian::
+
+    sudo apt-get install git libssl-dev python3-pip python3-pyqt5 pyqt5-dev-tools libudev-dev libusb-1.0.0-dev
+
+Then, install the current release of electrum-ftc::
+
+    pip3 install git+https://github.com/Feathercoin-Foundation/electrum-ftc.git@current_release
+
+Prepend ``sudo`` if you want to install electrum-ftc system-wide (not recommended).
+
+The installation will populate your desktop environment's application menu
+where it can be conveniently launched.
 
 
 Development version
@@ -55,61 +70,19 @@ Development version
 
 Check out the code from Github::
 
-    git clone git://github.com/spesmilo/electrum.git
-    cd electrum
+    git clone https://github.com/Feathercoin-Foundation/electrum-ftc.git
+    cd electrum-ftc
 
 Run install (this should install dependencies)::
 
+    sudo apt-get install libssl-dev python3-pyqt5 pyqt5-dev-tools
     python3 setup.py install
 
 Compile the icons file for Qt::
 
-    sudo apt-get install pyqt5-dev-tools
     pyrcc5 icons.qrc -o gui/qt/icons_rc.py
-
-Compile the protobuf description file::
-
-    sudo apt-get install protobuf-compiler
-    protoc --proto_path=lib/ --python_out=lib/ lib/paymentrequest.proto
 
 Create translations (optional)::
 
     sudo apt-get install python-pycurl gettext
     ./contrib/make_locale
-
-
-
-
-Creating Binaries
-=================
-
-
-To create binaries, create the 'packages' directory::
-
-    ./contrib/make_packages
-
-This directory contains the python dependencies used by Electrum.
-
-Mac OS X / macOS
---------
-
-::
-
-    # On MacPorts installs: 
-    sudo python3 setup-release.py py2app
-    
-    # On Homebrew installs: 
-    ARCHFLAGS="-arch i386 -arch x86_64" sudo python3 setup-release.py py2app --includes sip
-    
-    sudo hdiutil create -fs HFS+ -volname "Electrum" -srcfolder dist/Electrum.app dist/electrum-VERSION-macosx.dmg
-
-Windows
--------
-
-See `contrib/build-wine/README` file.
-
-
-Android
--------
-
-See `gui/kivy/Readme.txt` file.
