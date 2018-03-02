@@ -30,7 +30,7 @@ if platform.system() in ['Linux', 'FreeBSD', 'DragonFly']:
         else:
             usr_share = os.path.expanduser('~/.local/share')
     data_files += [
-        (os.path.join(usr_share, 'applications/'), ['electrum.desktop']),
+        (os.path.join(usr_share, 'applications/'), ['electrum-ftc.desktop']),
         (os.path.join(usr_share, 'pixmaps/'), ['icons/electrum.png'])
     ]
 
@@ -42,7 +42,7 @@ class InstallCommand(install):
         install.run(self)
 
 setup(
-    name="Electrum",
+    name="Electrum-FTC",
     version=version.ELECTRUM_VERSION,
     cmdclass={'install': InstallCommand},
     install_requires=[
@@ -90,10 +90,10 @@ setup(
     },
     scripts=['electrum'],
     data_files=data_files,
-    description="Lightweight Bitcoin Wallet",
-    author="Thomas Voegtlin",
-    author_email="thomasv@electrum.org",
+    description="Lightweight Feathercoin Wallet",
+    author="Thomas Voegtlin; Feathercoin Development Foundation",
+    author_email="thomasv@electrum.org; info@feathercoin.foundation",
     license="MIT Licence",
     url="https://electrum.org",
-    long_description="""Lightweight Bitcoin Wallet"""
+    long_description="""Lightweight Feathercoin Wallet"""
 )
