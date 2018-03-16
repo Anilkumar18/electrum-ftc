@@ -111,6 +111,12 @@ verify_hash libusb.7z "$LIBUSB_SHA256"
 cp libusb/MS32/dll/libusb-1.0.dll $WINEPREFIX/drive_c/python$PYTHON_VERSION/
 
 (cd $WINEPREFIX/drive_c && p7zip -d /tmp/mingw32.7z)
+# add .bat file that exposes host's git describe in wine
+printf '%s\r\n%s\r\n' '@echo off' 'cmd /c /bin/bash -c "git describe --dirty"' \
+    > $WINEPREFIX/drive_c/mingw32/bin/git.bat
+# make files without extension (i.e. unix binaries) executable in wine
+sed_cmd='s/^\("PATHEXT"=".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH\)"$/\1;."/'
+sed -i "$sed_cmd" $WINEPREFIX/system.reg
 
 # Install UPX
 #wget -O upx.zip "https://downloads.sourceforge.net/project/upx/upx/3.08/upx308w.zip"
