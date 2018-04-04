@@ -1071,3 +1071,9 @@ class Network(util.DaemonThread):
         if out != tx_hash:
             return False, "error: " + out
         return True, out
+
+    def export_checkpoints(self, path):
+        # run manually from the console to generate checkpoints
+        cp = self.blockchain().get_checkpoints()
+        with open(path, 'w', encoding='utf-8') as f:
+            f.write(json.dumps(cp, indent=4))

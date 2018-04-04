@@ -419,3 +419,13 @@ class Blockchain(util.PrintError):
         except BaseException as e:
             self.print_error('verify_chunk failed', str(e))
             return False
+
+    def get_checkpoints(self):
+        # for each chunk, store the hash of the last block and the target after the chunk
+        cp = []
+        n = self.height() // 2016
+        for index in range(n):
+            h = self.get_hash((index+1) * 2016 -1)
+            target = self.get_target((index+1) * 2016 -1, None)
+            cp.append((h, target[1]))
+        return cp
