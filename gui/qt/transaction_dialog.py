@@ -38,11 +38,22 @@ from electrum.util import bfh
 from .util import *
 
 dialogs = []  # Otherwise python randomly garbage collects the dialogs...
+transactionIDs=[] #store opened dialog's transaction ID
+
+def check_window_open(tx):
+    for transID in transactionIDs:
+        if transID==tx:
+            return transactionIDs.index(tx)
 
 def show_transaction(tx, parent, desc=None, prompt_if_unsaved=False):
-    d = TxDialog(tx, parent, desc, prompt_if_unsaved)
-    dialogs.append(d)
-    d.show()
+    dialog_open_index = check_window_open(str(tx))
+    if dialog_open_index is None:
+        d = TxDialog(tx, parent, desc, prompt_if_unsaved)
+        dialogs.append(d)
+        transactionIDs.append(str(tx))
+        d.show()
+    else:       
+        dialogs[dialog_open_index].activateWindow()
 
 class TxDialog(QDialog, MessageBoxMixin):
 
@@ -141,6 +152,7 @@ class TxDialog(QDialog, MessageBoxMixin):
         else:
             event.accept()
             dialogs.remove(self)
+            transactionIDs.remove(str(self.tx).strip())
 
     def show_qr(self):
         text = bfh(str(self.tx))
