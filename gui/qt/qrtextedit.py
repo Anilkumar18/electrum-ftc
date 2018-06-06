@@ -4,6 +4,7 @@ from electrum.plugins import run_hook
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import QFileDialog
+import os
 
 from .util import ButtonsTextEdit, MessageBoxMixin, ColorScheme
 
@@ -43,6 +44,10 @@ class ScanQRTextEdit(ButtonsTextEdit, MessageBoxMixin):
         fileName, __ = QFileDialog.getOpenFileName(self, 'select file')
         if not fileName:
             return
+        Extension=os.path.splitext(fileName)[1][1:].strip().lower()
+        if Extension!="txt" and Extension!="csv":
+            self.show_error(_('Invalid File Format. Please load a text or csv file'))
+            return   
         with open(fileName, "r") as f:
             data = f.read()
         self.setText(data)
