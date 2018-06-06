@@ -69,7 +69,12 @@ class WalletStorage(PrintError):
         self.pubkey = None
         if self.file_exists():
             with open(self.path, "r") as f:
-                self.raw = f.read()
+                # raise a error if invalid file type gets loaded
+                try:
+                    self.raw = f.read()                    
+                except Exception as e:
+                    raise IOError("Cannot read file")
+                    return
             if not self.is_encrypted():
                 self.load_data(self.raw)
         else:
